@@ -9,13 +9,25 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TradingHoursRouteImport } from './routes/trading-hours'
 import { Route as NewsRouteImport } from './routes/news'
+import { Route as HeatMapsRouteImport } from './routes/heat-maps'
 import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TradingHoursRoute = TradingHoursRouteImport.update({
+  id: '/trading-hours',
+  path: '/trading-hours',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NewsRoute = NewsRouteImport.update({
   id: '/news',
   path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HeatMapsRoute = HeatMapsRouteImport.update({
+  id: '/heat-maps',
+  path: '/heat-maps',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CalendarRoute = CalendarRouteImport.update({
@@ -32,40 +44,62 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/calendar': typeof CalendarRoute
+  '/heat-maps': typeof HeatMapsRoute
   '/news': typeof NewsRoute
+  '/trading-hours': typeof TradingHoursRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/calendar': typeof CalendarRoute
+  '/heat-maps': typeof HeatMapsRoute
   '/news': typeof NewsRoute
+  '/trading-hours': typeof TradingHoursRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/calendar': typeof CalendarRoute
+  '/heat-maps': typeof HeatMapsRoute
   '/news': typeof NewsRoute
+  '/trading-hours': typeof TradingHoursRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/calendar' | '/news'
+  fullPaths: '/' | '/calendar' | '/heat-maps' | '/news' | '/trading-hours'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/calendar' | '/news'
-  id: '__root__' | '/' | '/calendar' | '/news'
+  to: '/' | '/calendar' | '/heat-maps' | '/news' | '/trading-hours'
+  id: '__root__' | '/' | '/calendar' | '/heat-maps' | '/news' | '/trading-hours'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CalendarRoute: typeof CalendarRoute
+  HeatMapsRoute: typeof HeatMapsRoute
   NewsRoute: typeof NewsRoute
+  TradingHoursRoute: typeof TradingHoursRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/trading-hours': {
+      id: '/trading-hours'
+      path: '/trading-hours'
+      fullPath: '/trading-hours'
+      preLoaderRoute: typeof TradingHoursRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/news': {
       id: '/news'
       path: '/news'
       fullPath: '/news'
       preLoaderRoute: typeof NewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/heat-maps': {
+      id: '/heat-maps'
+      path: '/heat-maps'
+      fullPath: '/heat-maps'
+      preLoaderRoute: typeof HeatMapsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/calendar': {
@@ -88,7 +122,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CalendarRoute: CalendarRoute,
+  HeatMapsRoute: HeatMapsRoute,
   NewsRoute: NewsRoute,
+  TradingHoursRoute: TradingHoursRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
