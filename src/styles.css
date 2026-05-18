@@ -154,5 +154,65 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    background-image:
+      radial-gradient(ellipse 80% 50% at 10% 0%, oklch(0.72 0.17 240 / 0.08), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 100% 100%, oklch(0.62 0.15 280 / 0.06), transparent 60%);
+    background-attachment: fixed;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: oklch(0.18 0.022 255 / 0.6);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid oklch(0.28 0.025 250 / 0.7);
+  }
+  .glass-strong {
+    background: oklch(0.16 0.022 255 / 0.78);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid oklch(0.3 0.03 250 / 0.7);
+  }
+  .glow-primary {
+    box-shadow: var(--shadow-glow);
+  }
+  .elev {
+    box-shadow: var(--shadow-elev);
+  }
+  .hero-bg {
+    background-image: var(--gradient-hero), var(--gradient-glow);
+  }
+  .ring-dot::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: currentColor;
+    box-shadow: 0 0 0 3px color-mix(in oklab, currentColor 20%, transparent),
+      0 0 12px currentColor;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: oklch(0.3 0.02 250); border-radius: 3px;
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  .shimmer {
+    background: linear-gradient(90deg, transparent, oklch(1 0 0 / 0.06), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2.4s linear infinite;
+  }
+  @keyframes ticker-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  .live-dot {
+    animation: ticker-pulse 1.6s ease-in-out infinite;
   }
 }
