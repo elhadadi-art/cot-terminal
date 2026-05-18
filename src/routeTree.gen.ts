@@ -17,6 +17,10 @@ import { Route as CotReportRouteImport } from './routes/cot-report'
 import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CotReportIndexRouteImport } from './routes/cot-report.index'
+import { Route as CotReportSp500RouteImport } from './routes/cot-report.sp500'
+import { Route as CotReportNasdaqRouteImport } from './routes/cot-report.nasdaq'
+import { Route as CotReportGoldRouteImport } from './routes/cot-report.gold'
+import { Route as CotReportEuroRouteImport } from './routes/cot-report.euro'
 
 const TradingHoursRoute = TradingHoursRouteImport.update({
   id: '/trading-hours',
@@ -58,6 +62,26 @@ const CotReportIndexRoute = CotReportIndexRouteImport.update({
   path: '/',
   getParentRoute: () => CotReportRoute,
 } as any)
+const CotReportSp500Route = CotReportSp500RouteImport.update({
+  id: '/sp500',
+  path: '/sp500',
+  getParentRoute: () => CotReportRoute,
+} as any)
+const CotReportNasdaqRoute = CotReportNasdaqRouteImport.update({
+  id: '/nasdaq',
+  path: '/nasdaq',
+  getParentRoute: () => CotReportRoute,
+} as any)
+const CotReportGoldRoute = CotReportGoldRouteImport.update({
+  id: '/gold',
+  path: '/gold',
+  getParentRoute: () => CotReportRoute,
+} as any)
+const CotReportEuroRoute = CotReportEuroRouteImport.update({
+  id: '/euro',
+  path: '/euro',
+  getParentRoute: () => CotReportRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -67,6 +91,10 @@ export interface FileRoutesByFullPath {
   '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
+  '/cot-report/euro': typeof CotReportEuroRoute
+  '/cot-report/gold': typeof CotReportGoldRoute
+  '/cot-report/nasdaq': typeof CotReportNasdaqRoute
+  '/cot-report/sp500': typeof CotReportSp500Route
   '/cot-report/': typeof CotReportIndexRoute
 }
 export interface FileRoutesByTo {
@@ -76,6 +104,10 @@ export interface FileRoutesByTo {
   '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
+  '/cot-report/euro': typeof CotReportEuroRoute
+  '/cot-report/gold': typeof CotReportGoldRoute
+  '/cot-report/nasdaq': typeof CotReportNasdaqRoute
+  '/cot-report/sp500': typeof CotReportSp500Route
   '/cot-report': typeof CotReportIndexRoute
 }
 export interface FileRoutesById {
@@ -87,6 +119,10 @@ export interface FileRoutesById {
   '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
+  '/cot-report/euro': typeof CotReportEuroRoute
+  '/cot-report/gold': typeof CotReportGoldRoute
+  '/cot-report/nasdaq': typeof CotReportNasdaqRoute
+  '/cot-report/sp500': typeof CotReportSp500Route
   '/cot-report/': typeof CotReportIndexRoute
 }
 export interface FileRouteTypes {
@@ -99,6 +135,10 @@ export interface FileRouteTypes {
     | '/journal'
     | '/news'
     | '/trading-hours'
+    | '/cot-report/euro'
+    | '/cot-report/gold'
+    | '/cot-report/nasdaq'
+    | '/cot-report/sp500'
     | '/cot-report/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -108,6 +148,10 @@ export interface FileRouteTypes {
     | '/journal'
     | '/news'
     | '/trading-hours'
+    | '/cot-report/euro'
+    | '/cot-report/gold'
+    | '/cot-report/nasdaq'
+    | '/cot-report/sp500'
     | '/cot-report'
   id:
     | '__root__'
@@ -118,6 +162,10 @@ export interface FileRouteTypes {
     | '/journal'
     | '/news'
     | '/trading-hours'
+    | '/cot-report/euro'
+    | '/cot-report/gold'
+    | '/cot-report/nasdaq'
+    | '/cot-report/sp500'
     | '/cot-report/'
   fileRoutesById: FileRoutesById
 }
@@ -189,14 +237,50 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CotReportIndexRouteImport
       parentRoute: typeof CotReportRoute
     }
+    '/cot-report/sp500': {
+      id: '/cot-report/sp500'
+      path: '/sp500'
+      fullPath: '/cot-report/sp500'
+      preLoaderRoute: typeof CotReportSp500RouteImport
+      parentRoute: typeof CotReportRoute
+    }
+    '/cot-report/nasdaq': {
+      id: '/cot-report/nasdaq'
+      path: '/nasdaq'
+      fullPath: '/cot-report/nasdaq'
+      preLoaderRoute: typeof CotReportNasdaqRouteImport
+      parentRoute: typeof CotReportRoute
+    }
+    '/cot-report/gold': {
+      id: '/cot-report/gold'
+      path: '/gold'
+      fullPath: '/cot-report/gold'
+      preLoaderRoute: typeof CotReportGoldRouteImport
+      parentRoute: typeof CotReportRoute
+    }
+    '/cot-report/euro': {
+      id: '/cot-report/euro'
+      path: '/euro'
+      fullPath: '/cot-report/euro'
+      preLoaderRoute: typeof CotReportEuroRouteImport
+      parentRoute: typeof CotReportRoute
+    }
   }
 }
 
 interface CotReportRouteChildren {
+  CotReportEuroRoute: typeof CotReportEuroRoute
+  CotReportGoldRoute: typeof CotReportGoldRoute
+  CotReportNasdaqRoute: typeof CotReportNasdaqRoute
+  CotReportSp500Route: typeof CotReportSp500Route
   CotReportIndexRoute: typeof CotReportIndexRoute
 }
 
 const CotReportRouteChildren: CotReportRouteChildren = {
+  CotReportEuroRoute: CotReportEuroRoute,
+  CotReportGoldRoute: CotReportGoldRoute,
+  CotReportNasdaqRoute: CotReportNasdaqRoute,
+  CotReportSp500Route: CotReportSp500Route,
   CotReportIndexRoute: CotReportIndexRoute,
 }
 
