@@ -17,6 +17,10 @@ import { Route as CotReportRouteImport } from './routes/cot-report'
 import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CotReportIndexRouteImport } from './routes/cot-report.index'
+import { Route as IndicesSp500RouteImport } from './routes/indices.sp500'
+import { Route as IndicesRussellRouteImport } from './routes/indices.russell'
+import { Route as IndicesNasdaq100RouteImport } from './routes/indices.nasdaq100'
+import { Route as IndicesDow30RouteImport } from './routes/indices.dow30'
 import { Route as CotReportSp500RouteImport } from './routes/cot-report.sp500'
 import { Route as CotReportNasdaqRouteImport } from './routes/cot-report.nasdaq'
 import { Route as CotReportGoldRouteImport } from './routes/cot-report.gold'
@@ -62,6 +66,26 @@ const CotReportIndexRoute = CotReportIndexRouteImport.update({
   path: '/',
   getParentRoute: () => CotReportRoute,
 } as any)
+const IndicesSp500Route = IndicesSp500RouteImport.update({
+  id: '/indices/sp500',
+  path: '/indices/sp500',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndicesRussellRoute = IndicesRussellRouteImport.update({
+  id: '/indices/russell',
+  path: '/indices/russell',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndicesNasdaq100Route = IndicesNasdaq100RouteImport.update({
+  id: '/indices/nasdaq100',
+  path: '/indices/nasdaq100',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndicesDow30Route = IndicesDow30RouteImport.update({
+  id: '/indices/dow30',
+  path: '/indices/dow30',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CotReportSp500Route = CotReportSp500RouteImport.update({
   id: '/sp500',
   path: '/sp500',
@@ -95,6 +119,10 @@ export interface FileRoutesByFullPath {
   '/cot-report/gold': typeof CotReportGoldRoute
   '/cot-report/nasdaq': typeof CotReportNasdaqRoute
   '/cot-report/sp500': typeof CotReportSp500Route
+  '/indices/dow30': typeof IndicesDow30Route
+  '/indices/nasdaq100': typeof IndicesNasdaq100Route
+  '/indices/russell': typeof IndicesRussellRoute
+  '/indices/sp500': typeof IndicesSp500Route
   '/cot-report/': typeof CotReportIndexRoute
 }
 export interface FileRoutesByTo {
@@ -108,6 +136,10 @@ export interface FileRoutesByTo {
   '/cot-report/gold': typeof CotReportGoldRoute
   '/cot-report/nasdaq': typeof CotReportNasdaqRoute
   '/cot-report/sp500': typeof CotReportSp500Route
+  '/indices/dow30': typeof IndicesDow30Route
+  '/indices/nasdaq100': typeof IndicesNasdaq100Route
+  '/indices/russell': typeof IndicesRussellRoute
+  '/indices/sp500': typeof IndicesSp500Route
   '/cot-report': typeof CotReportIndexRoute
 }
 export interface FileRoutesById {
@@ -123,6 +155,10 @@ export interface FileRoutesById {
   '/cot-report/gold': typeof CotReportGoldRoute
   '/cot-report/nasdaq': typeof CotReportNasdaqRoute
   '/cot-report/sp500': typeof CotReportSp500Route
+  '/indices/dow30': typeof IndicesDow30Route
+  '/indices/nasdaq100': typeof IndicesNasdaq100Route
+  '/indices/russell': typeof IndicesRussellRoute
+  '/indices/sp500': typeof IndicesSp500Route
   '/cot-report/': typeof CotReportIndexRoute
 }
 export interface FileRouteTypes {
@@ -139,6 +175,10 @@ export interface FileRouteTypes {
     | '/cot-report/gold'
     | '/cot-report/nasdaq'
     | '/cot-report/sp500'
+    | '/indices/dow30'
+    | '/indices/nasdaq100'
+    | '/indices/russell'
+    | '/indices/sp500'
     | '/cot-report/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -152,6 +192,10 @@ export interface FileRouteTypes {
     | '/cot-report/gold'
     | '/cot-report/nasdaq'
     | '/cot-report/sp500'
+    | '/indices/dow30'
+    | '/indices/nasdaq100'
+    | '/indices/russell'
+    | '/indices/sp500'
     | '/cot-report'
   id:
     | '__root__'
@@ -166,6 +210,10 @@ export interface FileRouteTypes {
     | '/cot-report/gold'
     | '/cot-report/nasdaq'
     | '/cot-report/sp500'
+    | '/indices/dow30'
+    | '/indices/nasdaq100'
+    | '/indices/russell'
+    | '/indices/sp500'
     | '/cot-report/'
   fileRoutesById: FileRoutesById
 }
@@ -177,6 +225,10 @@ export interface RootRouteChildren {
   JournalRoute: typeof JournalRoute
   NewsRoute: typeof NewsRoute
   TradingHoursRoute: typeof TradingHoursRoute
+  IndicesDow30Route: typeof IndicesDow30Route
+  IndicesNasdaq100Route: typeof IndicesNasdaq100Route
+  IndicesRussellRoute: typeof IndicesRussellRoute
+  IndicesSp500Route: typeof IndicesSp500Route
 }
 
 declare module '@tanstack/react-router' {
@@ -237,6 +289,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CotReportIndexRouteImport
       parentRoute: typeof CotReportRoute
     }
+    '/indices/sp500': {
+      id: '/indices/sp500'
+      path: '/indices/sp500'
+      fullPath: '/indices/sp500'
+      preLoaderRoute: typeof IndicesSp500RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/indices/russell': {
+      id: '/indices/russell'
+      path: '/indices/russell'
+      fullPath: '/indices/russell'
+      preLoaderRoute: typeof IndicesRussellRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/indices/nasdaq100': {
+      id: '/indices/nasdaq100'
+      path: '/indices/nasdaq100'
+      fullPath: '/indices/nasdaq100'
+      preLoaderRoute: typeof IndicesNasdaq100RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/indices/dow30': {
+      id: '/indices/dow30'
+      path: '/indices/dow30'
+      fullPath: '/indices/dow30'
+      preLoaderRoute: typeof IndicesDow30RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cot-report/sp500': {
       id: '/cot-report/sp500'
       path: '/sp500'
@@ -296,6 +376,10 @@ const rootRouteChildren: RootRouteChildren = {
   JournalRoute: JournalRoute,
   NewsRoute: NewsRoute,
   TradingHoursRoute: TradingHoursRoute,
+  IndicesDow30Route: IndicesDow30Route,
+  IndicesNasdaq100Route: IndicesNasdaq100Route,
+  IndicesRussellRoute: IndicesRussellRoute,
+  IndicesSp500Route: IndicesSp500Route,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
