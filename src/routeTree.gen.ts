@@ -16,6 +16,7 @@ import { Route as HeatMapsRouteImport } from './routes/heat-maps'
 import { Route as CotReportRouteImport } from './routes/cot-report'
 import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CotReportIndexRouteImport } from './routes/cot-report.index'
 
 const TradingHoursRoute = TradingHoursRouteImport.update({
   id: '/trading-hours',
@@ -52,34 +53,41 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CotReportIndexRoute = CotReportIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CotReportRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/calendar': typeof CalendarRoute
-  '/cot-report': typeof CotReportRoute
+  '/cot-report': typeof CotReportRouteWithChildren
   '/heat-maps': typeof HeatMapsRoute
   '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
+  '/cot-report/': typeof CotReportIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/calendar': typeof CalendarRoute
-  '/cot-report': typeof CotReportRoute
   '/heat-maps': typeof HeatMapsRoute
   '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
+  '/cot-report': typeof CotReportIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/calendar': typeof CalendarRoute
-  '/cot-report': typeof CotReportRoute
+  '/cot-report': typeof CotReportRouteWithChildren
   '/heat-maps': typeof HeatMapsRoute
   '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
+  '/cot-report/': typeof CotReportIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,15 +99,16 @@ export interface FileRouteTypes {
     | '/journal'
     | '/news'
     | '/trading-hours'
+    | '/cot-report/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/calendar'
-    | '/cot-report'
     | '/heat-maps'
     | '/journal'
     | '/news'
     | '/trading-hours'
+    | '/cot-report'
   id:
     | '__root__'
     | '/'
@@ -109,12 +118,13 @@ export interface FileRouteTypes {
     | '/journal'
     | '/news'
     | '/trading-hours'
+    | '/cot-report/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CalendarRoute: typeof CalendarRoute
-  CotReportRoute: typeof CotReportRoute
+  CotReportRoute: typeof CotReportRouteWithChildren
   HeatMapsRoute: typeof HeatMapsRoute
   JournalRoute: typeof JournalRoute
   NewsRoute: typeof NewsRoute
@@ -172,13 +182,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cot-report/': {
+      id: '/cot-report/'
+      path: '/'
+      fullPath: '/cot-report/'
+      preLoaderRoute: typeof CotReportIndexRouteImport
+      parentRoute: typeof CotReportRoute
+    }
   }
 }
+
+interface CotReportRouteChildren {
+  CotReportIndexRoute: typeof CotReportIndexRoute
+}
+
+const CotReportRouteChildren: CotReportRouteChildren = {
+  CotReportIndexRoute: CotReportIndexRoute,
+}
+
+const CotReportRouteWithChildren = CotReportRoute._addFileChildren(
+  CotReportRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CalendarRoute: CalendarRoute,
-  CotReportRoute: CotReportRoute,
+  CotReportRoute: CotReportRouteWithChildren,
   HeatMapsRoute: HeatMapsRoute,
   JournalRoute: JournalRoute,
   NewsRoute: NewsRoute,
