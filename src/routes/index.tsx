@@ -1,357 +1,224 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Sparkles, ArrowUpRight, TrendingUp, Activity, Gauge, Droplets, Zap, BookOpen, ChevronRight } from "lucide-react";
+import { Panel, Stat, Pill, Spark, ProgressRing, Bar, Hero } from "@/components/marketiq/primitives";
+import { watchlist, sessions, feed } from "@/lib/mock";
 
 export const Route = createFileRoute("/")({
-  component: COTReportPage,
+  component: HomePage,
   head: () => ({
     meta: [
-      { title: "COT Report — EUR/USD | Positioning Terminal" },
-      {
-        name: "description",
-        content:
-          "Institutional COT positioning terminal: long/short breakdown, weekly change, open interest and historical extremes.",
-      },
+      { title: "Home — Marketiq Terminal" },
+      { name: "description", content: "AI morning brief, market pulse, live feed, probability engine, watchlist and session status." },
+      { property: "og:title", content: "Home — Marketiq Terminal" },
+      { property: "og:description", content: "AI-native institutional market overview." },
     ],
   }),
 });
 
-/* ---------- mock data ---------- */
-type Row = {
-  cat: string;
-  long: number;
-  short: number;
-  spread?: number;
-  chg: number;
-  oi: number;
-  traders: number;
-};
-
-const rows: Row[] = [
-  { cat: "Asset Managers",   long: 218430, short:  74210, spread:  5120, chg:  +4820, oi: 38.4, traders: 142 },
-  { cat: "Leveraged Funds",  long:  92110, short: 168740, spread: 12480, chg:  -7340, oi: 26.1, traders: 198 },
-  { cat: "Dealers",          long:  41280, short:  98620, spread:  2810, chg:   +910, oi: 14.8, traders:  31 },
-  { cat: "Other Reportables",long:  38470, short:  29110, spread:  4620, chg:  -1240, oi:  9.2, traders:  74 },
-  { cat: "Non-Reportable",   long:  21340, short:  40780, spread:     0, chg:  +2110, oi: 11.5, traders:   0 },
-  { cat: "Total Reportable", long: 390290, short: 370680, spread: 25030, chg:  -2850, oi: 88.5, traders: 445 },
+const pulse = [
+  { label: "Risk-On / Off",     value: "Risk-On",   delta: "+0.42σ", pos: true,  spark: [3,4,4,5,6,7,7,8,9,9], color: "var(--color-pos)" },
+  { label: "Dealer Pressure",   value: "Long Gamma",delta: "+0.18",  pos: true,  spark: [6,5,5,6,7,7,8,8,9,9], color: "var(--color-primary)" },
+  { label: "Volatility Regime", value: "Low",       delta: "-0.21",  pos: true,  spark: [8,7,7,6,6,5,5,4,4,3], color: "var(--color-warn)" },
+  { label: "Liquidity",         value: "Deep",      delta: "+1.2x",  pos: true,  spark: [4,5,5,6,6,7,8,8,9,9], color: "var(--color-primary)" },
+  { label: "AI Confidence",     value: "78%",       delta: "+6pts",  pos: true,  spark: [5,5,6,6,7,7,8,8,8,9], color: "var(--color-pos)" },
 ];
 
-const summary = {
-  market: "EUR/USD Futures",
-  exchange: "CME — Chicago Mercantile Exchange",
-  date: "Tue, 12 May 2026",
-  bias: "Bullish",
-  confidence: 78,
-};
-
-const extremes = [
-  { label: "52w Long %",   value: "74%", note: "92nd pct" },
-  { label: "52w Short %",  value: "31%", note: "18th pct" },
-  { label: "Net Position", value: "+19,610", note: "+2σ" },
-  { label: "OI Δ 4w",      value: "+8.2%", note: "expanding" },
+const probs = [
+  { label: "Breakout",       value: 72, color: "var(--color-pos)",     note: "Above 532.50 trigger" },
+  { label: "Mean Reversion", value: 38, color: "var(--color-warn)",    note: "Stretched RSI on QQQ" },
+  { label: "Vol Spike Risk", value: 24, color: "var(--color-neg)",     note: "VIX term in contango"  },
 ];
 
-/* ---------- helpers ---------- */
-const fmt = (n: number) => n.toLocaleString("en-US");
-const sign = (n: number) => (n > 0 ? "+" : n < 0 ? "" : "");
-
-/* ---------- charts (inline SVG, terminal style) ---------- */
-function NetPositionChart() {
-  const pts = [12, 18, 14, 22, 30, 28, 35, 42, 38, 46, 52, 48, 55, 60, 58, 64, 70, 66, 72, 78, 74, 80, 76, 82];
-  const w = 600, h = 120, pad = 24;
-  const max = 100;
-  const step = (w - pad * 2) / (pts.length - 1);
-  const d = pts
-    .map((p, i) => `${i === 0 ? "M" : "L"}${pad + i * step},${h - pad - (p / max) * (h - pad * 2)}`)
-    .join(" ");
+function HomePage() {
   return (
-    <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-[120px]">
-      {[0, 1, 2, 3].map((i) => (
-        <line key={i} x1={pad} x2={w - pad} y1={pad + i * 24} y2={pad + i * 24} stroke="var(--color-grid)" strokeWidth="1" />
-      ))}
-      <path d={d} fill="none" stroke="var(--color-primary)" strokeWidth="1.2" />
-      <text x={pad} y={14} fontSize="9" fill="var(--color-muted-foreground)" fontFamily="ui-monospace,monospace">
-        NET POSITION · 24W
-      </text>
-      <text x={w - pad} y={14} fontSize="9" fill="var(--color-pos)" textAnchor="end" fontFamily="ui-monospace,monospace">
-        +19,610
-      </text>
-    </svg>
-  );
-}
+    <div className="space-y-4">
+      {/* SECTION 1 — AI MORNING BRIEF */}
+      <Hero
+        eyebrow="AI Morning Brief · 13 May 2026"
+        title={<>Moderately <span className="text-[var(--color-pos)]">Bullish</span> tape into US open</>}
+        subtitle={<>Dealers long gamma above SPY 530.20, dampening intraday volatility. Breadth narrowing but momentum intact. Watch CPI revisions and Powell remarks at 10:00 ET.</>}
+      >
+        <div className="flex items-center gap-4">
+          <ProgressRing value={78} label="CONF" />
+          <button className="inline-flex items-center gap-1.5 h-9 px-3 rounded-sm bg-primary text-primary-foreground text-[11px] font-semibold tracking-wide hover:bg-primary/90 glow-primary">
+            <Sparkles className="size-3.5" /> Full AI brief <ArrowUpRight className="size-3.5" />
+          </button>
+        </div>
+      </Hero>
 
-function OIChart() {
-  const bars = [40, 44, 42, 48, 52, 50, 56, 54, 60, 58, 64, 62, 68, 66, 72, 70, 76, 74, 80, 78, 84, 82, 88, 90];
-  const w = 600, h = 120, pad = 24;
-  const bw = (w - pad * 2) / bars.length - 2;
-  return (
-    <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-[120px]">
-      {[0, 1, 2, 3].map((i) => (
-        <line key={i} x1={pad} x2={w - pad} y1={pad + i * 24} y2={pad + i * 24} stroke="var(--color-grid)" strokeWidth="1" />
-      ))}
-      {bars.map((b, i) => {
-        const x = pad + i * (bw + 2);
-        const bh = (b / 100) * (h - pad * 2);
-        return <rect key={i} x={x} y={h - pad - bh} width={bw} height={bh} fill="var(--color-muted-foreground)" opacity="0.7" />;
-      })}
-      <text x={pad} y={14} fontSize="9" fill="var(--color-muted-foreground)" fontFamily="ui-monospace,monospace">
-        OPEN INTEREST · 24W
-      </text>
-      <text x={w - pad} y={14} fontSize="9" fill="var(--color-primary)" textAnchor="end" fontFamily="ui-monospace,monospace">
-        +8.2%
-      </text>
-    </svg>
-  );
-}
-
-/* ---------- page ---------- */
-function COTReportPage() {
-  return (
-    <div className="min-h-screen bg-background text-foreground font-mono text-[12px] leading-tight">
-      {/* TOP HEADER */}
-      <header className="border-b border-border bg-card">
-        <div className="px-4 py-2 flex items-center gap-6 flex-wrap">
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] tracking-widest text-muted-foreground">COT/</span>
-            <h1 className="text-[13px] font-semibold text-foreground">{summary.market}</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+        <Panel title="Bias">
+          <div className="flex items-center justify-between">
+            <Stat label="Direction" value="Bullish" accent="pos" delta={{ value: "+6 pts", pos: true }} />
+            <span className="text-[var(--color-pos)] ring-dot text-[10px] tracking-widest">STRONG</span>
           </div>
-          <Field label="EXCHANGE" value={summary.exchange} />
-          <Field label="REPORT" value={summary.date} />
-          <Field label="BIAS">
-            <span className="inline-flex items-center gap-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-pos)]" />
-              <span className="text-[var(--color-pos)] font-semibold">{summary.bias}</span>
-            </span>
-          </Field>
-          <Field label="AI CONF">
-            <span className="flex items-center gap-2">
-              <span className="text-foreground font-semibold">{summary.confidence}%</span>
-              <span className="inline-block w-16 h-1 bg-muted overflow-hidden">
-                <span
-                  className="block h-full bg-primary"
-                  style={{ width: `${summary.confidence}%` }}
-                />
-              </span>
-            </span>
-          </Field>
-          <div className="ml-auto flex items-center gap-3 text-[10px] text-muted-foreground">
-            <span className="inline-flex items-center gap-1">
-              <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-pos)] animate-pulse" />
-              LIVE
-            </span>
-            <span>UTC 14:32:08</span>
+          <div className="mt-2"><Bar value={78} color="var(--color-pos)" /></div>
+        </Panel>
+        <Panel title="Volatility Regime">
+          <Stat label="VIX" value="13.21" delta={{ value: "-0.18", pos: true }} hint="Realized 10D · 9.8" />
+          <div className="mt-2"><Bar value={28} color="var(--color-warn)" /></div>
+        </Panel>
+        <Panel title="Risk Sentiment">
+          <Stat label="Composite" value="Risk-On" accent="pos" delta={{ value: "+0.42σ", pos: true }} hint="HYG/IEF, AUD/JPY, BTC" />
+          <div className="mt-2"><Bar value={68} color="var(--color-pos)" /></div>
+        </Panel>
+        <Panel title="Key Levels · SPY">
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div><div className="text-[10px] text-muted-foreground">Pivot</div><div className="text-sm font-semibold tabular-nums">532.50</div></div>
+            <div><div className="text-[10px] text-muted-foreground">Support</div><div className="text-sm font-semibold tabular-nums text-[var(--color-neg)]">530.20</div></div>
+            <div><div className="text-[10px] text-muted-foreground">Resist</div><div className="text-sm font-semibold tabular-nums text-[var(--color-pos)]">535.80</div></div>
+          </div>
+        </Panel>
+      </div>
+
+      {/* SECTION 2 — MARKET PULSE */}
+      <div>
+        <div className="flex items-center justify-between mb-2">
+          <div className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground">Market Pulse</div>
+          <div className="text-[10px] text-muted-foreground">5 signals · updated 12s ago</div>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+          {pulse.map((p) => (
+            <Panel key={p.label} title={p.label}>
+              <div className="flex items-end justify-between gap-2">
+                <Stat label="" value={p.value} delta={{ value: p.delta, pos: p.pos }} />
+                <Spark data={p.spark} color={p.color} width={80} height={28} />
+              </div>
+            </Panel>
+          ))}
+        </div>
+      </div>
+
+      {/* SECTION 3+4 — feed + probability */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+        <Panel
+          title="Live Feed · AI Intraday"
+          right={<span className="text-[10px] text-[var(--color-pos)] ring-dot">LIVE</span>}
+          className="lg:col-span-2"
+          bodyClassName="p-0"
+        >
+          <ul className="divide-y divide-border/60">
+            {feed.map((f, i) => (
+              <li key={i} className="flex items-start gap-3 px-3 py-2 hover:bg-secondary/40">
+                <div className="text-[10px] tabular-nums text-muted-foreground w-12 pt-0.5">{f.t}</div>
+                <span className="mt-1.5 size-1.5 rounded-full bg-primary live-dot shadow-[0_0_8px_var(--color-primary)]" />
+                <div className="flex-1 text-[12px] text-foreground/90">{f.txt}</div>
+                <Activity className="size-3 text-muted-foreground mt-0.5" />
+              </li>
+            ))}
+          </ul>
+        </Panel>
+
+        <Panel title="Probability Engine" right={<Sparkles className="size-3 text-primary" />}>
+          <div className="space-y-3">
+            {probs.map((p) => (
+              <div key={p.label}>
+                <div className="flex items-center justify-between mb-1">
+                  <div className="text-[11px] text-foreground">{p.label}</div>
+                  <div className="text-[11px] font-semibold tabular-nums" style={{ color: p.color }}>{p.value}%</div>
+                </div>
+                <Bar value={p.value} color={p.color} />
+                <div className="text-[10px] text-muted-foreground mt-0.5">{p.note}</div>
+              </div>
+            ))}
+            <div className="flex items-center justify-around pt-1 border-t border-border/70">
+              <ProgressRing value={72} label="BRK" size={48} color="var(--color-pos)" />
+              <ProgressRing value={38} label="REV" size={48} color="var(--color-warn)" />
+              <ProgressRing value={24} label="VOL" size={48} color="var(--color-neg)" />
+            </div>
+          </div>
+        </Panel>
+      </div>
+
+      {/* SECTION 5+6 — Watchlist + Sessions */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+        <Panel title="Watchlist" right={<button className="text-[10px] text-primary hover:underline">Manage</button>} className="lg:col-span-2" bodyClassName="p-0">
+          <table className="w-full text-[12px]">
+            <thead className="bg-secondary/40">
+              <tr className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                <th className="text-left px-3 py-1.5">Sym</th>
+                <th className="text-left px-3 py-1.5">Name</th>
+                <th className="text-right px-3 py-1.5">Price</th>
+                <th className="text-right px-3 py-1.5">%</th>
+                <th className="text-left px-3 py-1.5">Sentiment</th>
+                <th className="text-right px-3 py-1.5">RS</th>
+                <th className="text-left px-3 py-1.5">Vol</th>
+              </tr>
+            </thead>
+            <tbody>
+              {watchlist.map((w) => {
+                const pos = w.chg >= 0;
+                return (
+                  <tr key={w.sym} className="border-t border-border/60 hover:bg-secondary/40">
+                    <td className="px-3 py-1.5 font-semibold tabular-nums">{w.sym}</td>
+                    <td className="px-3 py-1.5 text-muted-foreground">{w.name}</td>
+                    <td className="px-3 py-1.5 text-right tabular-nums">{w.price.toFixed(2)}</td>
+                    <td className={`px-3 py-1.5 text-right tabular-nums ${pos ? "text-[var(--color-pos)]" : "text-[var(--color-neg)]"}`}>{pos ? "+" : ""}{w.chg.toFixed(2)}%</td>
+                    <td className="px-3 py-1.5">
+                      <Pill tone={w.sent === "Bullish" ? "pos" : w.sent === "Bearish" ? "neg" : "neutral"}>{w.sent}</Pill>
+                    </td>
+                    <td className="px-3 py-1.5 text-right">
+                      <div className="inline-flex items-center gap-2">
+                        <span className="tabular-nums">{w.rs}</span>
+                        <div className="w-10"><Bar value={w.rs} color={w.rs >= 70 ? "var(--color-pos)" : w.rs >= 40 ? "var(--color-warn)" : "var(--color-neg)"} /></div>
+                      </div>
+                    </td>
+                    <td className="px-3 py-1.5 text-muted-foreground">{w.vol}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </Panel>
+
+        <Panel title="Session Status" bodyClassName="p-0">
+          <ul className="divide-y divide-border/60">
+            {sessions.map((s) => (
+              <li key={s.mkt} className="flex items-center gap-3 px-3 py-2">
+                <span className={s.open ? "text-[var(--color-pos)]" : "text-muted-foreground"}>
+                  <span className={`inline-block size-1.5 rounded-full ${s.open ? "bg-[var(--color-pos)] live-dot" : "bg-muted-foreground"}`} />
+                </span>
+                <div className="flex-1">
+                  <div className="text-[12px] font-medium">{s.mkt}</div>
+                  <div className="text-[10px] text-muted-foreground tabular-nums">{s.ctd} · {s.tz}</div>
+                </div>
+                <Pill tone={s.open ? "pos" : "neutral"}>{s.open ? "OPEN" : "CLOSED"}</Pill>
+                <span className="text-[10px] text-muted-foreground w-12 text-right">{s.liq}</span>
+              </li>
+            ))}
+          </ul>
+        </Panel>
+      </div>
+
+      {/* SECTION 7 — Journal preview */}
+      <Panel
+        title="Journal · Today"
+        right={
+          <a href="/journal" className="text-[10px] text-primary inline-flex items-center gap-1 hover:underline">
+            Open journal <ChevronRight className="size-3" />
+          </a>
+        }
+      >
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <div>
+            <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 flex items-center gap-1"><BookOpen className="size-3" />Today's Plan</div>
+            <p className="text-[12px] leading-snug">Trade SPY breakout above 532.50 with stops at 530. Avoid pre-Fed exposure after 13:30.</p>
+          </div>
+          <div>
+            <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 flex items-center gap-1"><Gauge className="size-3" />Thesis</div>
+            <p className="text-[12px] leading-snug">Dealers long gamma supports range; CPI miss could trigger reflexive squeeze in semis.</p>
+          </div>
+          <div>
+            <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 flex items-center gap-1"><Droplets className="size-3" />Notes</div>
+            <p className="text-[12px] leading-snug">IWM lagging signals breadth caution. Keep size at 0.5R until breakout confirmed.</p>
+          </div>
+          <div className="md:border-l md:border-border/70 md:pl-3">
+            <div className="text-[10px] uppercase tracking-wider text-primary mb-1 flex items-center gap-1"><Sparkles className="size-3" />AI Recap · Yesterday</div>
+            <p className="text-[12px] leading-snug text-foreground/90">Execution score 82/100. Held NVDA winner to plan; oversized TSLA fade reduced PF to 1.6.</p>
+            <div className="mt-1.5 flex items-center gap-2"><Bar value={82} color="var(--color-pos)" /><span className="text-[10px] tabular-nums">82</span></div>
           </div>
         </div>
-      </header>
-
-      {/* MAIN GRID */}
-      <main className="px-4 py-3 grid grid-cols-1 lg:grid-cols-[7fr_3fr] gap-3">
-        {/* MAIN TABLE */}
-        <section className="border border-border bg-card">
-          <div className="flex items-center justify-between px-3 py-1.5 border-b border-border bg-secondary">
-            <div className="flex items-center gap-3">
-              <span className="text-[10px] tracking-widest text-muted-foreground">POSITIONING · DISAGGREGATED</span>
-              <span className="text-[10px] text-muted-foreground">CONTRACTS</span>
-            </div>
-            <div className="flex items-center gap-1">
-              {["1W", "4W", "13W", "52W"].map((t, i) => (
-                <button
-                  key={t}
-                  className={`px-2 py-0.5 text-[10px] border ${
-                    i === 0
-                      ? "border-primary text-primary"
-                      : "border-border text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse text-[12px]">
-              <thead className="sticky top-0 bg-secondary z-10">
-                <tr className="text-muted-foreground">
-                  {["Category", "Long", "Short", "Spread", "Weekly Δ", "OI %", "Traders"].map((h, i) => (
-                    <th
-                      key={h}
-                      className={`px-3 py-1.5 border-b border-border text-[10px] tracking-wider font-medium ${
-                        i === 0 ? "text-left" : "text-right"
-                      }`}
-                    >
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((r, i) => {
-                  const isTotal = r.cat === "Total Reportable";
-                  return (
-                    <tr
-                      key={r.cat}
-                      className={`border-b border-border/60 hover:bg-secondary/60 ${
-                        isTotal ? "bg-secondary/40 font-semibold" : ""
-                      }`}
-                    >
-                      <td className="px-3 py-1.5 text-left text-foreground">
-                        <span className="text-muted-foreground mr-2">{String(i + 1).padStart(2, "0")}</span>
-                        {r.cat}
-                      </td>
-                      <td className="px-3 py-1.5 text-right tabular-nums text-[var(--color-pos)]">{fmt(r.long)}</td>
-                      <td className="px-3 py-1.5 text-right tabular-nums text-[var(--color-neg)]">{fmt(r.short)}</td>
-                      <td className="px-3 py-1.5 text-right tabular-nums text-muted-foreground">
-                        {r.spread ? fmt(r.spread) : "—"}
-                      </td>
-                      <td
-                        className={`px-3 py-1.5 text-right tabular-nums ${
-                          r.chg >= 0 ? "text-[var(--color-pos)]" : "text-[var(--color-neg)]"
-                        }`}
-                      >
-                        {sign(r.chg)}
-                        {fmt(r.chg)}
-                      </td>
-                      <td className="px-3 py-1.5 text-right tabular-nums text-foreground">
-                        <span className="inline-flex items-center gap-1.5 justify-end">
-                          {r.oi.toFixed(1)}%
-                          <span className="inline-block w-10 h-1 bg-muted overflow-hidden">
-                            <span className="block h-full bg-primary/70" style={{ width: `${r.oi}%` }} />
-                          </span>
-                        </span>
-                      </td>
-                      <td className="px-3 py-1.5 text-right tabular-nums text-muted-foreground">
-                        {r.traders || "—"}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="px-3 py-1.5 border-t border-border bg-secondary/60 flex items-center justify-between text-[10px] text-muted-foreground">
-            <span>Source: CFTC · TFF Disaggregated · 12 May 2026</span>
-            <span className="flex items-center gap-3">
-              <span>Σ Long <span className="text-[var(--color-pos)]">811,630</span></span>
-              <span>Σ Short <span className="text-[var(--color-neg)]">782,140</span></span>
-              <span>Net <span className="text-[var(--color-pos)]">+29,490</span></span>
-            </span>
-          </div>
-        </section>
-
-        {/* SIDE PANEL */}
-        <aside className="flex flex-col gap-3">
-          <Panel title="AI Summary">
-            <p className="text-[11px] text-foreground/90 leading-snug">
-              Asset managers extended net longs to a 92nd-percentile reading while
-              leveraged funds trimmed shorts. Positioning skew remains
-              <span className="text-[var(--color-pos)]"> bullish</span>, with crowding
-              risk elevated above 2σ.
-            </p>
-          </Panel>
-
-          <Panel title="Current Bias">
-            <Row label="Direction"  value={<span className="text-[var(--color-pos)]">Long</span>} />
-            <Row label="Strength"   value="78 / 100" />
-            <Row label="Horizon"    value="2–6 weeks" />
-            <Row label="Δ vs prior" value={<span className="text-[var(--color-pos)]">+6 pts</span>} />
-          </Panel>
-
-          <Panel title="Positioning Regime">
-            <Row label="Regime"      value="Trend-Extension" />
-            <Row label="Volatility"  value="Low" />
-            <Row label="OI Trend"    value={<span className="text-[var(--color-pos)]">Expanding</span>} />
-            <Row label="Persistence" value="6 weeks" />
-          </Panel>
-
-          <Panel title="Crowd Positioning">
-            <div className="flex h-2 w-full overflow-hidden">
-              <span className="bg-[var(--color-pos)]" style={{ width: "68%" }} />
-              <span className="bg-[var(--color-neg)]" style={{ width: "32%" }} />
-            </div>
-            <div className="mt-1 flex justify-between text-[10px] text-muted-foreground">
-              <span>Long 68%</span>
-              <span>Short 32%</span>
-            </div>
-            <Row label="Crowding score" value="High (92nd)" />
-          </Panel>
-
-          <Panel title="Historical Extremes">
-            <div className="grid grid-cols-2 gap-x-3 gap-y-1">
-              {extremes.map((e) => (
-                <div key={e.label} className="flex flex-col">
-                  <span className="text-[10px] text-muted-foreground">{e.label}</span>
-                  <span className="text-foreground tabular-nums">{e.value}</span>
-                  <span className="text-[10px] text-muted-foreground">{e.note}</span>
-                </div>
-              ))}
-            </div>
-          </Panel>
-        </aside>
-
-        {/* BOTTOM CHARTS */}
-        <section className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-3">
-          <ChartPanel title="Net Position">
-            <NetPositionChart />
-          </ChartPanel>
-          <ChartPanel title="Open Interest">
-            <OIChart />
-          </ChartPanel>
-        </section>
-      </main>
-
-      <footer className="border-t border-border px-4 py-1.5 text-[10px] text-muted-foreground flex justify-between">
-        <span>COT Terminal v1.0</span>
-        <span>Data CFTC · Refreshed weekly Fri 15:30 ET</span>
-      </footer>
-    </div>
-  );
-}
-
-/* ---------- small primitives ---------- */
-function Field({
-  label,
-  value,
-  children,
-}: {
-  label: string;
-  value?: string;
-  children?: React.ReactNode;
-}) {
-  return (
-    <div className="flex flex-col">
-      <span className="text-[9px] tracking-widest text-muted-foreground">{label}</span>
-      <span className="text-[12px] text-foreground">{children ?? value}</span>
-    </div>
-  );
-}
-
-function Panel({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="border border-border bg-card">
-      <div className="px-2.5 py-1 border-b border-border bg-secondary text-[10px] tracking-widest text-muted-foreground">
-        {title.toUpperCase()}
-      </div>
-      <div className="p-2.5 space-y-1">{children}</div>
-    </div>
-  );
-}
-
-function Row({ label, value }: { label: string; value: React.ReactNode }) {
-  return (
-    <div className="flex justify-between items-baseline text-[11px]">
-      <span className="text-muted-foreground">{label}</span>
-      <span className="text-foreground tabular-nums">{value}</span>
-    </div>
-  );
-}
-
-function ChartPanel({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="border border-border bg-card">
-      <div className="px-2.5 py-1 border-b border-border bg-secondary text-[10px] tracking-widest text-muted-foreground">
-        {title.toUpperCase()}
-      </div>
-      <div className="p-2">{children}</div>
+      </Panel>
     </div>
   );
 }

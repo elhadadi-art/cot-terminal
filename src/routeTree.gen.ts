@@ -9,38 +9,272 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TradingHoursRouteImport } from './routes/trading-hours'
+import { Route as NewsRouteImport } from './routes/news'
+import { Route as JournalRouteImport } from './routes/journal'
+import { Route as HeatMapsRouteImport } from './routes/heat-maps'
+import { Route as CotReportRouteImport } from './routes/cot-report'
+import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CotReportIndexRouteImport } from './routes/cot-report.index'
+import { Route as IndicesSp500RouteImport } from './routes/indices.sp500'
+import { Route as IndicesRussellRouteImport } from './routes/indices.russell'
+import { Route as IndicesNasdaq100RouteImport } from './routes/indices.nasdaq100'
+import { Route as IndicesDow30RouteImport } from './routes/indices.dow30'
+import { Route as CotReportSp500RouteImport } from './routes/cot-report.sp500'
+import { Route as CotReportNasdaqRouteImport } from './routes/cot-report.nasdaq'
+import { Route as CotReportGoldRouteImport } from './routes/cot-report.gold'
+import { Route as CotReportEuroRouteImport } from './routes/cot-report.euro'
 
+const TradingHoursRoute = TradingHoursRouteImport.update({
+  id: '/trading-hours',
+  path: '/trading-hours',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsRoute = NewsRouteImport.update({
+  id: '/news',
+  path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JournalRoute = JournalRouteImport.update({
+  id: '/journal',
+  path: '/journal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HeatMapsRoute = HeatMapsRouteImport.update({
+  id: '/heat-maps',
+  path: '/heat-maps',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CotReportRoute = CotReportRouteImport.update({
+  id: '/cot-report',
+  path: '/cot-report',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalendarRoute = CalendarRouteImport.update({
+  id: '/calendar',
+  path: '/calendar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CotReportIndexRoute = CotReportIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CotReportRoute,
+} as any)
+const IndicesSp500Route = IndicesSp500RouteImport.update({
+  id: '/indices/sp500',
+  path: '/indices/sp500',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndicesRussellRoute = IndicesRussellRouteImport.update({
+  id: '/indices/russell',
+  path: '/indices/russell',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndicesNasdaq100Route = IndicesNasdaq100RouteImport.update({
+  id: '/indices/nasdaq100',
+  path: '/indices/nasdaq100',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndicesDow30Route = IndicesDow30RouteImport.update({
+  id: '/indices/dow30',
+  path: '/indices/dow30',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CotReportSp500Route = CotReportSp500RouteImport.update({
+  id: '/sp500',
+  path: '/sp500',
+  getParentRoute: () => CotReportRoute,
+} as any)
+const CotReportNasdaqRoute = CotReportNasdaqRouteImport.update({
+  id: '/nasdaq',
+  path: '/nasdaq',
+  getParentRoute: () => CotReportRoute,
+} as any)
+const CotReportGoldRoute = CotReportGoldRouteImport.update({
+  id: '/gold',
+  path: '/gold',
+  getParentRoute: () => CotReportRoute,
+} as any)
+const CotReportEuroRoute = CotReportEuroRouteImport.update({
+  id: '/euro',
+  path: '/euro',
+  getParentRoute: () => CotReportRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/calendar': typeof CalendarRoute
+  '/cot-report': typeof CotReportRouteWithChildren
+  '/heat-maps': typeof HeatMapsRoute
+  '/journal': typeof JournalRoute
+  '/news': typeof NewsRoute
+  '/trading-hours': typeof TradingHoursRoute
+  '/cot-report/euro': typeof CotReportEuroRoute
+  '/cot-report/gold': typeof CotReportGoldRoute
+  '/cot-report/nasdaq': typeof CotReportNasdaqRoute
+  '/cot-report/sp500': typeof CotReportSp500Route
+  '/indices/dow30': typeof IndicesDow30Route
+  '/indices/nasdaq100': typeof IndicesNasdaq100Route
+  '/indices/russell': typeof IndicesRussellRoute
+  '/indices/sp500': typeof IndicesSp500Route
+  '/cot-report/': typeof CotReportIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/calendar': typeof CalendarRoute
+  '/heat-maps': typeof HeatMapsRoute
+  '/journal': typeof JournalRoute
+  '/news': typeof NewsRoute
+  '/trading-hours': typeof TradingHoursRoute
+  '/cot-report/euro': typeof CotReportEuroRoute
+  '/cot-report/gold': typeof CotReportGoldRoute
+  '/cot-report/nasdaq': typeof CotReportNasdaqRoute
+  '/cot-report/sp500': typeof CotReportSp500Route
+  '/indices/dow30': typeof IndicesDow30Route
+  '/indices/nasdaq100': typeof IndicesNasdaq100Route
+  '/indices/russell': typeof IndicesRussellRoute
+  '/indices/sp500': typeof IndicesSp500Route
+  '/cot-report': typeof CotReportIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/calendar': typeof CalendarRoute
+  '/cot-report': typeof CotReportRouteWithChildren
+  '/heat-maps': typeof HeatMapsRoute
+  '/journal': typeof JournalRoute
+  '/news': typeof NewsRoute
+  '/trading-hours': typeof TradingHoursRoute
+  '/cot-report/euro': typeof CotReportEuroRoute
+  '/cot-report/gold': typeof CotReportGoldRoute
+  '/cot-report/nasdaq': typeof CotReportNasdaqRoute
+  '/cot-report/sp500': typeof CotReportSp500Route
+  '/indices/dow30': typeof IndicesDow30Route
+  '/indices/nasdaq100': typeof IndicesNasdaq100Route
+  '/indices/russell': typeof IndicesRussellRoute
+  '/indices/sp500': typeof IndicesSp500Route
+  '/cot-report/': typeof CotReportIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/calendar'
+    | '/cot-report'
+    | '/heat-maps'
+    | '/journal'
+    | '/news'
+    | '/trading-hours'
+    | '/cot-report/euro'
+    | '/cot-report/gold'
+    | '/cot-report/nasdaq'
+    | '/cot-report/sp500'
+    | '/indices/dow30'
+    | '/indices/nasdaq100'
+    | '/indices/russell'
+    | '/indices/sp500'
+    | '/cot-report/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/calendar'
+    | '/heat-maps'
+    | '/journal'
+    | '/news'
+    | '/trading-hours'
+    | '/cot-report/euro'
+    | '/cot-report/gold'
+    | '/cot-report/nasdaq'
+    | '/cot-report/sp500'
+    | '/indices/dow30'
+    | '/indices/nasdaq100'
+    | '/indices/russell'
+    | '/indices/sp500'
+    | '/cot-report'
+  id:
+    | '__root__'
+    | '/'
+    | '/calendar'
+    | '/cot-report'
+    | '/heat-maps'
+    | '/journal'
+    | '/news'
+    | '/trading-hours'
+    | '/cot-report/euro'
+    | '/cot-report/gold'
+    | '/cot-report/nasdaq'
+    | '/cot-report/sp500'
+    | '/indices/dow30'
+    | '/indices/nasdaq100'
+    | '/indices/russell'
+    | '/indices/sp500'
+    | '/cot-report/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CalendarRoute: typeof CalendarRoute
+  CotReportRoute: typeof CotReportRouteWithChildren
+  HeatMapsRoute: typeof HeatMapsRoute
+  JournalRoute: typeof JournalRoute
+  NewsRoute: typeof NewsRoute
+  TradingHoursRoute: typeof TradingHoursRoute
+  IndicesDow30Route: typeof IndicesDow30Route
+  IndicesNasdaq100Route: typeof IndicesNasdaq100Route
+  IndicesRussellRoute: typeof IndicesRussellRoute
+  IndicesSp500Route: typeof IndicesSp500Route
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/trading-hours': {
+      id: '/trading-hours'
+      path: '/trading-hours'
+      fullPath: '/trading-hours'
+      preLoaderRoute: typeof TradingHoursRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news': {
+      id: '/news'
+      path: '/news'
+      fullPath: '/news'
+      preLoaderRoute: typeof NewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/journal': {
+      id: '/journal'
+      path: '/journal'
+      fullPath: '/journal'
+      preLoaderRoute: typeof JournalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/heat-maps': {
+      id: '/heat-maps'
+      path: '/heat-maps'
+      fullPath: '/heat-maps'
+      preLoaderRoute: typeof HeatMapsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cot-report': {
+      id: '/cot-report'
+      path: '/cot-report'
+      fullPath: '/cot-report'
+      preLoaderRoute: typeof CotReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calendar': {
+      id: '/calendar'
+      path: '/calendar'
+      fullPath: '/calendar'
+      preLoaderRoute: typeof CalendarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,12 +282,115 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cot-report/': {
+      id: '/cot-report/'
+      path: '/'
+      fullPath: '/cot-report/'
+      preLoaderRoute: typeof CotReportIndexRouteImport
+      parentRoute: typeof CotReportRoute
+    }
+    '/indices/sp500': {
+      id: '/indices/sp500'
+      path: '/indices/sp500'
+      fullPath: '/indices/sp500'
+      preLoaderRoute: typeof IndicesSp500RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/indices/russell': {
+      id: '/indices/russell'
+      path: '/indices/russell'
+      fullPath: '/indices/russell'
+      preLoaderRoute: typeof IndicesRussellRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/indices/nasdaq100': {
+      id: '/indices/nasdaq100'
+      path: '/indices/nasdaq100'
+      fullPath: '/indices/nasdaq100'
+      preLoaderRoute: typeof IndicesNasdaq100RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/indices/dow30': {
+      id: '/indices/dow30'
+      path: '/indices/dow30'
+      fullPath: '/indices/dow30'
+      preLoaderRoute: typeof IndicesDow30RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cot-report/sp500': {
+      id: '/cot-report/sp500'
+      path: '/sp500'
+      fullPath: '/cot-report/sp500'
+      preLoaderRoute: typeof CotReportSp500RouteImport
+      parentRoute: typeof CotReportRoute
+    }
+    '/cot-report/nasdaq': {
+      id: '/cot-report/nasdaq'
+      path: '/nasdaq'
+      fullPath: '/cot-report/nasdaq'
+      preLoaderRoute: typeof CotReportNasdaqRouteImport
+      parentRoute: typeof CotReportRoute
+    }
+    '/cot-report/gold': {
+      id: '/cot-report/gold'
+      path: '/gold'
+      fullPath: '/cot-report/gold'
+      preLoaderRoute: typeof CotReportGoldRouteImport
+      parentRoute: typeof CotReportRoute
+    }
+    '/cot-report/euro': {
+      id: '/cot-report/euro'
+      path: '/euro'
+      fullPath: '/cot-report/euro'
+      preLoaderRoute: typeof CotReportEuroRouteImport
+      parentRoute: typeof CotReportRoute
+    }
   }
 }
 
+interface CotReportRouteChildren {
+  CotReportEuroRoute: typeof CotReportEuroRoute
+  CotReportGoldRoute: typeof CotReportGoldRoute
+  CotReportNasdaqRoute: typeof CotReportNasdaqRoute
+  CotReportSp500Route: typeof CotReportSp500Route
+  CotReportIndexRoute: typeof CotReportIndexRoute
+}
+
+const CotReportRouteChildren: CotReportRouteChildren = {
+  CotReportEuroRoute: CotReportEuroRoute,
+  CotReportGoldRoute: CotReportGoldRoute,
+  CotReportNasdaqRoute: CotReportNasdaqRoute,
+  CotReportSp500Route: CotReportSp500Route,
+  CotReportIndexRoute: CotReportIndexRoute,
+}
+
+const CotReportRouteWithChildren = CotReportRoute._addFileChildren(
+  CotReportRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CalendarRoute: CalendarRoute,
+  CotReportRoute: CotReportRouteWithChildren,
+  HeatMapsRoute: HeatMapsRoute,
+  JournalRoute: JournalRoute,
+  NewsRoute: NewsRoute,
+  TradingHoursRoute: TradingHoursRoute,
+  IndicesDow30Route: IndicesDow30Route,
+  IndicesNasdaq100Route: IndicesNasdaq100Route,
+  IndicesRussellRoute: IndicesRussellRoute,
+  IndicesSp500Route: IndicesSp500Route,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
