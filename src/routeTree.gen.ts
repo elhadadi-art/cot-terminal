@@ -11,7 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TradingHoursRouteImport } from './routes/trading-hours'
 import { Route as NewsRouteImport } from './routes/news'
+import { Route as JournalRouteImport } from './routes/journal'
 import { Route as HeatMapsRouteImport } from './routes/heat-maps'
+import { Route as CotReportRouteImport } from './routes/cot-report'
 import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -25,9 +27,19 @@ const NewsRoute = NewsRouteImport.update({
   path: '/news',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JournalRoute = JournalRouteImport.update({
+  id: '/journal',
+  path: '/journal',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HeatMapsRoute = HeatMapsRouteImport.update({
   id: '/heat-maps',
   path: '/heat-maps',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CotReportRoute = CotReportRouteImport.update({
+  id: '/cot-report',
+  path: '/cot-report',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CalendarRoute = CalendarRouteImport.update({
@@ -44,14 +56,18 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/calendar': typeof CalendarRoute
+  '/cot-report': typeof CotReportRoute
   '/heat-maps': typeof HeatMapsRoute
+  '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/calendar': typeof CalendarRoute
+  '/cot-report': typeof CotReportRoute
   '/heat-maps': typeof HeatMapsRoute
+  '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
 }
@@ -59,22 +75,48 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/calendar': typeof CalendarRoute
+  '/cot-report': typeof CotReportRoute
   '/heat-maps': typeof HeatMapsRoute
+  '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/calendar' | '/heat-maps' | '/news' | '/trading-hours'
+  fullPaths:
+    | '/'
+    | '/calendar'
+    | '/cot-report'
+    | '/heat-maps'
+    | '/journal'
+    | '/news'
+    | '/trading-hours'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/calendar' | '/heat-maps' | '/news' | '/trading-hours'
-  id: '__root__' | '/' | '/calendar' | '/heat-maps' | '/news' | '/trading-hours'
+  to:
+    | '/'
+    | '/calendar'
+    | '/cot-report'
+    | '/heat-maps'
+    | '/journal'
+    | '/news'
+    | '/trading-hours'
+  id:
+    | '__root__'
+    | '/'
+    | '/calendar'
+    | '/cot-report'
+    | '/heat-maps'
+    | '/journal'
+    | '/news'
+    | '/trading-hours'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CalendarRoute: typeof CalendarRoute
+  CotReportRoute: typeof CotReportRoute
   HeatMapsRoute: typeof HeatMapsRoute
+  JournalRoute: typeof JournalRoute
   NewsRoute: typeof NewsRoute
   TradingHoursRoute: typeof TradingHoursRoute
 }
@@ -95,11 +137,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/journal': {
+      id: '/journal'
+      path: '/journal'
+      fullPath: '/journal'
+      preLoaderRoute: typeof JournalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/heat-maps': {
       id: '/heat-maps'
       path: '/heat-maps'
       fullPath: '/heat-maps'
       preLoaderRoute: typeof HeatMapsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cot-report': {
+      id: '/cot-report'
+      path: '/cot-report'
+      fullPath: '/cot-report'
+      preLoaderRoute: typeof CotReportRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/calendar': {
@@ -122,7 +178,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CalendarRoute: CalendarRoute,
+  CotReportRoute: CotReportRoute,
   HeatMapsRoute: HeatMapsRoute,
+  JournalRoute: JournalRoute,
   NewsRoute: NewsRoute,
   TradingHoursRoute: TradingHoursRoute,
 }
