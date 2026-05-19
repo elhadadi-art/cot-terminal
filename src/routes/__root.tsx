@@ -24,6 +24,8 @@ import {
   Sparkles,
   Menu,
   X,
+  Sun,
+  Moon,
 } from "lucide-react";
 
 import appCss from "../styles.css?url";
@@ -95,9 +97,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: React.ReactNode }) {
+  // Pre-hydration theme set to avoid FOUC
+  const themeScript = `(()=>{try{var t=localStorage.getItem('mq-theme')||'dark';document.documentElement.classList.remove('light','dark');document.documentElement.classList.add(t);}catch(e){document.documentElement.classList.add('dark');}})();`;
   return (
     <html lang="en" className="dark">
-      <head><HeadContent /></head>
+      <head>
+        <HeadContent />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="font-sans antialiased">
         {children}
         <Scripts />
@@ -273,6 +280,7 @@ function Header({ onMenu }: { onMenu: () => void }) {
       </div>
 
       <div className="ml-auto flex items-center gap-1.5">
+        <ThemeToggle />
         <button className="relative h-8 w-8 rounded-sm border border-border/70 bg-secondary/60 hover:bg-secondary text-muted-foreground hover:text-foreground inline-flex items-center justify-center">
           <Bell className="size-3.5" />
           <span className="absolute top-1 right-1 size-1.5 rounded-full bg-[var(--color-warn)] live-dot" />
@@ -292,6 +300,41 @@ function Header({ onMenu }: { onMenu: () => void }) {
 }
 
 function Ticker({ sym, v, c, pos }: { sym: string; v: string; c: string; pos: boolean }) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <span className="text-muted-foreground font-medium">{sym}</span>
+      <span className="text-foreground">{v}</span>
+      <span className={pos ? "text-[var(--color-pos)]" : "text-[var(--color-neg)]"}>{c >= "0" && c[0] !== "-" ? "+" : ""}{c}</span>
+    </div>
+  );
+}
+
+function ThemeToggle() {
+  const [theme, setTheme] = React.useState<"dark" | "light">("dark");
+  React.useEffect(() => {
+    const stored = (localStorage.getItem("mq-theme") as "dark" | "light" | null) || "dark";
+    setTheme(stored);
+  }, []);
+  const toggle = () => {
+    const next = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+    const root = document.documentElement;
+    root.classList.remove("dark", "light");
+    root.classList.add(next);
+    try { localStorage.setItem("mq-theme", next); } catch {}
+  };
+  return (
+    <button
+      onClick={toggle}
+      aria-label="Toggle theme"
+      className="h-8 w-8 rounded-sm border border-border/70 bg-secondary/60 hover:bg-secondary text-muted-foreground hover:text-foreground inline-flex items-center justify-center"
+    >
+      {theme === "dark" ? <Sun className="size-3.5" /> : <Moon className="size-3.5" />}
+    </button>
+  );
+}
+
+function _TickerOld({ sym, v, c, pos }: { sym: string; v: string; c: string; pos: boolean }) {
   return (
     <div className="flex items-center gap-1.5">
       <span className="text-muted-foreground font-medium">{sym}</span>
