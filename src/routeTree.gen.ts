@@ -21,6 +21,7 @@ import { Route as IndicesSp500RouteImport } from './routes/indices.sp500'
 import { Route as IndicesRussellRouteImport } from './routes/indices.russell'
 import { Route as IndicesNasdaq100RouteImport } from './routes/indices.nasdaq100'
 import { Route as IndicesDow30RouteImport } from './routes/indices.dow30'
+import { Route as CotReportSlugRouteImport } from './routes/cot-report.$slug'
 
 const TradingHoursRoute = TradingHoursRouteImport.update({
   id: '/trading-hours',
@@ -82,6 +83,11 @@ const IndicesDow30Route = IndicesDow30RouteImport.update({
   path: '/indices/dow30',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CotReportSlugRoute = CotReportSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => CotReportRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -91,6 +97,7 @@ export interface FileRoutesByFullPath {
   '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
+  '/cot-report/$slug': typeof CotReportSlugRoute
   '/indices/dow30': typeof IndicesDow30Route
   '/indices/nasdaq100': typeof IndicesNasdaq100Route
   '/indices/russell': typeof IndicesRussellRoute
@@ -104,6 +111,7 @@ export interface FileRoutesByTo {
   '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
+  '/cot-report/$slug': typeof CotReportSlugRoute
   '/indices/dow30': typeof IndicesDow30Route
   '/indices/nasdaq100': typeof IndicesNasdaq100Route
   '/indices/russell': typeof IndicesRussellRoute
@@ -119,6 +127,7 @@ export interface FileRoutesById {
   '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
+  '/cot-report/$slug': typeof CotReportSlugRoute
   '/indices/dow30': typeof IndicesDow30Route
   '/indices/nasdaq100': typeof IndicesNasdaq100Route
   '/indices/russell': typeof IndicesRussellRoute
@@ -135,6 +144,7 @@ export interface FileRouteTypes {
     | '/journal'
     | '/news'
     | '/trading-hours'
+    | '/cot-report/$slug'
     | '/indices/dow30'
     | '/indices/nasdaq100'
     | '/indices/russell'
@@ -148,6 +158,7 @@ export interface FileRouteTypes {
     | '/journal'
     | '/news'
     | '/trading-hours'
+    | '/cot-report/$slug'
     | '/indices/dow30'
     | '/indices/nasdaq100'
     | '/indices/russell'
@@ -162,6 +173,7 @@ export interface FileRouteTypes {
     | '/journal'
     | '/news'
     | '/trading-hours'
+    | '/cot-report/$slug'
     | '/indices/dow30'
     | '/indices/nasdaq100'
     | '/indices/russell'
@@ -269,14 +281,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndicesDow30RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cot-report/$slug': {
+      id: '/cot-report/$slug'
+      path: '/$slug'
+      fullPath: '/cot-report/$slug'
+      preLoaderRoute: typeof CotReportSlugRouteImport
+      parentRoute: typeof CotReportRoute
+    }
   }
 }
 
 interface CotReportRouteChildren {
+  CotReportSlugRoute: typeof CotReportSlugRoute
   CotReportIndexRoute: typeof CotReportIndexRoute
 }
 
 const CotReportRouteChildren: CotReportRouteChildren = {
+  CotReportSlugRoute: CotReportSlugRoute,
   CotReportIndexRoute: CotReportIndexRoute,
 }
 
