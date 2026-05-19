@@ -25,6 +25,7 @@ import { Route as CotReportSp500RouteImport } from './routes/cot-report.sp500'
 import { Route as CotReportNasdaqRouteImport } from './routes/cot-report.nasdaq'
 import { Route as CotReportGoldRouteImport } from './routes/cot-report.gold'
 import { Route as CotReportEuroRouteImport } from './routes/cot-report.euro'
+import { Route as CotReportSlugRouteImport } from './routes/cot-report.$slug'
 
 const TradingHoursRoute = TradingHoursRouteImport.update({
   id: '/trading-hours',
@@ -106,6 +107,11 @@ const CotReportEuroRoute = CotReportEuroRouteImport.update({
   path: '/euro',
   getParentRoute: () => CotReportRoute,
 } as any)
+const CotReportSlugRoute = CotReportSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => CotReportRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -115,6 +121,7 @@ export interface FileRoutesByFullPath {
   '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
+  '/cot-report/$slug': typeof CotReportSlugRoute
   '/cot-report/euro': typeof CotReportEuroRoute
   '/cot-report/gold': typeof CotReportGoldRoute
   '/cot-report/nasdaq': typeof CotReportNasdaqRoute
@@ -132,6 +139,7 @@ export interface FileRoutesByTo {
   '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
+  '/cot-report/$slug': typeof CotReportSlugRoute
   '/cot-report/euro': typeof CotReportEuroRoute
   '/cot-report/gold': typeof CotReportGoldRoute
   '/cot-report/nasdaq': typeof CotReportNasdaqRoute
@@ -151,6 +159,7 @@ export interface FileRoutesById {
   '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
+  '/cot-report/$slug': typeof CotReportSlugRoute
   '/cot-report/euro': typeof CotReportEuroRoute
   '/cot-report/gold': typeof CotReportGoldRoute
   '/cot-report/nasdaq': typeof CotReportNasdaqRoute
@@ -171,6 +180,7 @@ export interface FileRouteTypes {
     | '/journal'
     | '/news'
     | '/trading-hours'
+    | '/cot-report/$slug'
     | '/cot-report/euro'
     | '/cot-report/gold'
     | '/cot-report/nasdaq'
@@ -188,6 +198,7 @@ export interface FileRouteTypes {
     | '/journal'
     | '/news'
     | '/trading-hours'
+    | '/cot-report/$slug'
     | '/cot-report/euro'
     | '/cot-report/gold'
     | '/cot-report/nasdaq'
@@ -206,6 +217,7 @@ export interface FileRouteTypes {
     | '/journal'
     | '/news'
     | '/trading-hours'
+    | '/cot-report/$slug'
     | '/cot-report/euro'
     | '/cot-report/gold'
     | '/cot-report/nasdaq'
@@ -345,10 +357,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CotReportEuroRouteImport
       parentRoute: typeof CotReportRoute
     }
+    '/cot-report/$slug': {
+      id: '/cot-report/$slug'
+      path: '/$slug'
+      fullPath: '/cot-report/$slug'
+      preLoaderRoute: typeof CotReportSlugRouteImport
+      parentRoute: typeof CotReportRoute
+    }
   }
 }
 
 interface CotReportRouteChildren {
+  CotReportSlugRoute: typeof CotReportSlugRoute
   CotReportEuroRoute: typeof CotReportEuroRoute
   CotReportGoldRoute: typeof CotReportGoldRoute
   CotReportNasdaqRoute: typeof CotReportNasdaqRoute
@@ -357,6 +377,7 @@ interface CotReportRouteChildren {
 }
 
 const CotReportRouteChildren: CotReportRouteChildren = {
+  CotReportSlugRoute: CotReportSlugRoute,
   CotReportEuroRoute: CotReportEuroRoute,
   CotReportGoldRoute: CotReportGoldRoute,
   CotReportNasdaqRoute: CotReportNasdaqRoute,
@@ -384,3 +405,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
