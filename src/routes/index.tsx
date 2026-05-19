@@ -155,7 +155,7 @@ function HomePage() {
                     <td className="px-3 py-1.5 text-right tabular-nums">{w.price.toFixed(2)}</td>
                     <td className={`px-3 py-1.5 text-right tabular-nums ${pos ? "text-[var(--color-pos)]" : "text-[var(--color-neg)]"}`}>{pos ? "+" : ""}{w.chg.toFixed(2)}%</td>
                     <td className="px-3 py-1.5">
-                      <Pill tone={w.sent === "Bullish" ? "pos" : w.sent === "Bearish" ? "neg" : "neutral"}>{w.sent}</Pill>
+                      <Pill tone={(w.sent as string) === "Bullish" ? "pos" : (w.sent as string) === "Bearish" ? "neg" : "neutral"}>{w.sent}</Pill>
                     </td>
                     <td className="px-3 py-1.5 text-right">
                       <div className="inline-flex items-center gap-2">
