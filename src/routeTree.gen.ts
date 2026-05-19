@@ -21,10 +21,6 @@ import { Route as IndicesSp500RouteImport } from './routes/indices.sp500'
 import { Route as IndicesRussellRouteImport } from './routes/indices.russell'
 import { Route as IndicesNasdaq100RouteImport } from './routes/indices.nasdaq100'
 import { Route as IndicesDow30RouteImport } from './routes/indices.dow30'
-import { Route as CotReportSp500RouteImport } from './routes/cot-report.sp500'
-import { Route as CotReportNasdaqRouteImport } from './routes/cot-report.nasdaq'
-import { Route as CotReportGoldRouteImport } from './routes/cot-report.gold'
-import { Route as CotReportEuroRouteImport } from './routes/cot-report.euro'
 
 const TradingHoursRoute = TradingHoursRouteImport.update({
   id: '/trading-hours',
@@ -86,26 +82,6 @@ const IndicesDow30Route = IndicesDow30RouteImport.update({
   path: '/indices/dow30',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CotReportSp500Route = CotReportSp500RouteImport.update({
-  id: '/sp500',
-  path: '/sp500',
-  getParentRoute: () => CotReportRoute,
-} as any)
-const CotReportNasdaqRoute = CotReportNasdaqRouteImport.update({
-  id: '/nasdaq',
-  path: '/nasdaq',
-  getParentRoute: () => CotReportRoute,
-} as any)
-const CotReportGoldRoute = CotReportGoldRouteImport.update({
-  id: '/gold',
-  path: '/gold',
-  getParentRoute: () => CotReportRoute,
-} as any)
-const CotReportEuroRoute = CotReportEuroRouteImport.update({
-  id: '/euro',
-  path: '/euro',
-  getParentRoute: () => CotReportRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -115,10 +91,6 @@ export interface FileRoutesByFullPath {
   '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
-  '/cot-report/euro': typeof CotReportEuroRoute
-  '/cot-report/gold': typeof CotReportGoldRoute
-  '/cot-report/nasdaq': typeof CotReportNasdaqRoute
-  '/cot-report/sp500': typeof CotReportSp500Route
   '/indices/dow30': typeof IndicesDow30Route
   '/indices/nasdaq100': typeof IndicesNasdaq100Route
   '/indices/russell': typeof IndicesRussellRoute
@@ -132,10 +104,6 @@ export interface FileRoutesByTo {
   '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
-  '/cot-report/euro': typeof CotReportEuroRoute
-  '/cot-report/gold': typeof CotReportGoldRoute
-  '/cot-report/nasdaq': typeof CotReportNasdaqRoute
-  '/cot-report/sp500': typeof CotReportSp500Route
   '/indices/dow30': typeof IndicesDow30Route
   '/indices/nasdaq100': typeof IndicesNasdaq100Route
   '/indices/russell': typeof IndicesRussellRoute
@@ -151,10 +119,6 @@ export interface FileRoutesById {
   '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
-  '/cot-report/euro': typeof CotReportEuroRoute
-  '/cot-report/gold': typeof CotReportGoldRoute
-  '/cot-report/nasdaq': typeof CotReportNasdaqRoute
-  '/cot-report/sp500': typeof CotReportSp500Route
   '/indices/dow30': typeof IndicesDow30Route
   '/indices/nasdaq100': typeof IndicesNasdaq100Route
   '/indices/russell': typeof IndicesRussellRoute
@@ -171,10 +135,6 @@ export interface FileRouteTypes {
     | '/journal'
     | '/news'
     | '/trading-hours'
-    | '/cot-report/euro'
-    | '/cot-report/gold'
-    | '/cot-report/nasdaq'
-    | '/cot-report/sp500'
     | '/indices/dow30'
     | '/indices/nasdaq100'
     | '/indices/russell'
@@ -188,10 +148,6 @@ export interface FileRouteTypes {
     | '/journal'
     | '/news'
     | '/trading-hours'
-    | '/cot-report/euro'
-    | '/cot-report/gold'
-    | '/cot-report/nasdaq'
-    | '/cot-report/sp500'
     | '/indices/dow30'
     | '/indices/nasdaq100'
     | '/indices/russell'
@@ -206,10 +162,6 @@ export interface FileRouteTypes {
     | '/journal'
     | '/news'
     | '/trading-hours'
-    | '/cot-report/euro'
-    | '/cot-report/gold'
-    | '/cot-report/nasdaq'
-    | '/cot-report/sp500'
     | '/indices/dow30'
     | '/indices/nasdaq100'
     | '/indices/russell'
@@ -317,50 +269,14 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndicesDow30RouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/cot-report/sp500': {
-      id: '/cot-report/sp500'
-      path: '/sp500'
-      fullPath: '/cot-report/sp500'
-      preLoaderRoute: typeof CotReportSp500RouteImport
-      parentRoute: typeof CotReportRoute
-    }
-    '/cot-report/nasdaq': {
-      id: '/cot-report/nasdaq'
-      path: '/nasdaq'
-      fullPath: '/cot-report/nasdaq'
-      preLoaderRoute: typeof CotReportNasdaqRouteImport
-      parentRoute: typeof CotReportRoute
-    }
-    '/cot-report/gold': {
-      id: '/cot-report/gold'
-      path: '/gold'
-      fullPath: '/cot-report/gold'
-      preLoaderRoute: typeof CotReportGoldRouteImport
-      parentRoute: typeof CotReportRoute
-    }
-    '/cot-report/euro': {
-      id: '/cot-report/euro'
-      path: '/euro'
-      fullPath: '/cot-report/euro'
-      preLoaderRoute: typeof CotReportEuroRouteImport
-      parentRoute: typeof CotReportRoute
-    }
   }
 }
 
 interface CotReportRouteChildren {
-  CotReportEuroRoute: typeof CotReportEuroRoute
-  CotReportGoldRoute: typeof CotReportGoldRoute
-  CotReportNasdaqRoute: typeof CotReportNasdaqRoute
-  CotReportSp500Route: typeof CotReportSp500Route
   CotReportIndexRoute: typeof CotReportIndexRoute
 }
 
 const CotReportRouteChildren: CotReportRouteChildren = {
-  CotReportEuroRoute: CotReportEuroRoute,
-  CotReportGoldRoute: CotReportGoldRoute,
-  CotReportNasdaqRoute: CotReportNasdaqRoute,
-  CotReportSp500Route: CotReportSp500Route,
   CotReportIndexRoute: CotReportIndexRoute,
 }
 
@@ -384,3 +300,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
