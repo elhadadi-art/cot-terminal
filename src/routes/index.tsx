@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Sparkles, ArrowUpRight, TrendingUp, Activity, Gauge, Droplets, Zap, BookOpen, ChevronRight } from "lucide-react";
 import { Panel, Stat, Pill, Spark, ProgressRing, Bar, Hero } from "@/components/marketiq/primitives";
 import { watchlist, sessions, feed } from "@/lib/mock";
+import { RetailPositioningCard } from "@/components/dashboard/retail-positioning";
 
 export const Route = createFileRoute("/")({
   component: HomePage,
@@ -62,13 +63,7 @@ function HomePage() {
           <Stat label="Composite" value="Risk-On" accent="pos" delta={{ value: "+0.42σ", pos: true }} hint="HYG/IEF, AUD/JPY, BTC" />
           <div className="mt-2"><Bar value={68} color="var(--color-pos)" /></div>
         </Panel>
-        <Panel title="Key Levels · SPY">
-          <div className="grid grid-cols-3 gap-2 text-center">
-            <div><div className="text-[10px] text-muted-foreground">Pivot</div><div className="text-sm font-semibold tabular-nums">532.50</div></div>
-            <div><div className="text-[10px] text-muted-foreground">Support</div><div className="text-sm font-semibold tabular-nums text-[var(--color-neg)]">530.20</div></div>
-            <div><div className="text-[10px] text-muted-foreground">Resist</div><div className="text-sm font-semibold tabular-nums text-[var(--color-pos)]">535.80</div></div>
-          </div>
-        </Panel>
+        <RetailPositioningCard />
       </div>
 
       {/* SECTION 2 — MARKET PULSE */}
