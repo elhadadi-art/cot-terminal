@@ -195,6 +195,23 @@ export function COTMarketPage({ market, code, exchange }: { market: string; code
               <div><div className="flex justify-between text-[11px]"><span>Contrarian Signal</span><span className="tabular-nums">High</span></div><Bar value={88} color="var(--color-warn)" /></div>
             </div>
           </Panel>
+
+          <Panel title="Non-Reportable · Bias / Vol / Regime / Risk / Sentiment" right={<Pill tone="warn">Retail</Pill>}>
+            <div className="grid grid-cols-2 gap-2">
+              <Stat label="Bias"       value="Short"    accent="neg"     hint="-19,440 net" />
+              <Stat label="Volatility" value="Elevated" accent="warn"    hint="σ 1.8x 12w" />
+              <Stat label="Regime"     value="Risk-On"  accent="primary" hint="trend phase" />
+              <Stat label="Risk"       value="High"     accent="warn"    hint="crowding 88" />
+              <Stat label="Sentiment"  value="Fading"   accent="neg"     hint="vs smart $" />
+              <Stat label="Δ Weekly"   value="+2,110"   accent="pos"     hint="covering" />
+            </div>
+            <div className="mt-3 space-y-1.5 text-[11px]">
+              <div><div className="flex justify-between"><span className="text-muted-foreground">Bias Strength</span><span className="tabular-nums">-62</span></div><Bar value={62} color="var(--color-neg)" /></div>
+              <div><div className="flex justify-between"><span className="text-muted-foreground">Vol Regime</span><span className="tabular-nums">74</span></div><Bar value={74} color="var(--color-warn)" /></div>
+              <div><div className="flex justify-between"><span className="text-muted-foreground">Risk Score</span><span className="tabular-nums">88</span></div><Bar value={88} color="var(--color-warn)" /></div>
+              <div><div className="flex justify-between"><span className="text-muted-foreground">Sentiment Tilt</span><span className="tabular-nums">-44</span></div><Bar value={44} color="var(--color-neg)" /></div>
+            </div>
+          </Panel>
         </div>
       </div>
 
