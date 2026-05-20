@@ -100,7 +100,7 @@ export function COTMarketPage({ market, code, exchange }: { market: string; code
         </div>
       </Hero>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         <Panel title="Commercial">
           <Stat label="Net Short" value="-57,340" accent="neg" delta={{ value: "+910", pos: true }} hint="Dealers + Producers" />
           <div className="mt-2"><Bar value={28} color="var(--color-neg)" /></div>
@@ -108,6 +108,10 @@ export function COTMarketPage({ market, code, exchange }: { market: string; code
         <Panel title="Non-Commercial">
           <Stat label="Net Long" value="+76,630" accent="pos" delta={{ value: "+4,820", pos: true }} hint="Asset Mgrs + LevFunds" />
           <div className="mt-2"><Bar value={72} color="var(--color-pos)" /></div>
+        </Panel>
+        <Panel title="Non-Reportable" right={<Pill tone="warn">Retail</Pill>}>
+          <Stat label="Net Short" value="-19,440" accent="neg" delta={{ value: "+2,110", pos: true }} hint="Small specs · covering" />
+          <div className="mt-2"><Bar value={44} color="var(--color-warn)" /></div>
         </Panel>
         <Panel title="Open Interest">
           <Stat label="Contracts" value="445,210" accent="primary" delta={{ value: "+8.2%", pos: true }} hint="4W expanding" />
