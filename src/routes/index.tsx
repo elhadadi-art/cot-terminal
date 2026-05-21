@@ -385,7 +385,7 @@ function MoverTable({ title, icon: Icon, tone, rows }: {
     "var(--color-primary)";
   return (
     <Panel
-      title={<span className="inline-flex items-center gap-1.5"><Icon className="size-3" style={{ color: toneVar }} /> {title}</span>}
+      title={<span className="inline-flex items-center gap-1.5" style={{ color: toneVar }}><Icon className="size-3" /> <span className="text-muted-foreground">{title}</span></span>}
       right={<button className="text-[9px] tracking-widest text-muted-foreground hover:text-foreground">VIEW ALL</button>}
       bodyClassName="p-0"
     >
