@@ -1,12 +1,33 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import * as React from "react";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { Sparkles, ArrowUpRight, Flame, TrendingUp, TrendingDown, Activity, Zap, Brain, Eye, AlertTriangle, ChevronRight, Radio, Gauge, Droplets, Bitcoin, DollarSign, BarChart3 } from "lucide-react";
 import { Panel, Stat, Pill, Spark, ProgressRing, Bar } from "@/components/marketiq/primitives";
-import { heatmapSP, calendar, news } from "@/lib/mock";
+import { heatmapSP } from "@/lib/mock";
 import { cn } from "@/lib/utils";
+import { marketQueries } from "@/lib/market.queries";
+import type {
+  AiSignalDTO,
+  CryptoAssetDTO,
+  EconomicEventDTO,
+  ForexPairDTO,
+  FuturesMarketDTO,
+  HomepageSnapshotDTO,
+  InsiderTradeDTO,
+  MarketBreadthDTO,
+  MarketIndexDTO,
+  MarketNewsDTO,
+  StockDTO,
+} from "@/lib/market.types";
 
 export const Route = createFileRoute("/")({
   component: HomePage,
+  loader: ({ context }) =>
+    context.queryClient.ensureQueryData(marketQueries.homepage()),
+  errorComponent: HomeErrorComponent,
+  notFoundComponent: () => (
+    <div className="p-8 text-sm text-muted-foreground">Not found.</div>
+  ),
   head: () => ({
     meta: [
       { title: "Marketiq Terminal — Institutional AI Trading Dashboard" },
@@ -16,6 +37,15 @@ export const Route = createFileRoute("/")({
     ],
   }),
 });
+
+function HomeErrorComponent({ error }: { error: Error }) {
+  return (
+    <div className="p-8">
+      <h2 className="text-base font-semibold mb-2">Failed to load market snapshot</h2>
+      <p className="text-xs text-muted-foreground">{error.message}</p>
+    </div>
+  );
+}
 
 /* ================== Mock data ================== */
 
