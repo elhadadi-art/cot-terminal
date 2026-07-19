@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TradingHoursRouteImport } from './routes/trading-hours'
 import { Route as NewsRouteImport } from './routes/news'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as JournalRouteImport } from './routes/journal'
 import { Route as HeatMapsRouteImport } from './routes/heat-maps'
 import { Route as CotReportRouteImport } from './routes/cot-report'
@@ -22,6 +23,9 @@ import { Route as IndicesRussellRouteImport } from './routes/indices.russell'
 import { Route as IndicesNasdaq100RouteImport } from './routes/indices.nasdaq100'
 import { Route as IndicesDow30RouteImport } from './routes/indices.dow30'
 import { Route as CotReportSlugRouteImport } from './routes/cot-report.$slug'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
+import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 
 const TradingHoursRoute = TradingHoursRouteImport.update({
   id: '/trading-hours',
@@ -31,6 +35,11 @@ const TradingHoursRoute = TradingHoursRouteImport.update({
 const NewsRoute = NewsRouteImport.update({
   id: '/news',
   path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JournalRoute = JournalRouteImport.update({
@@ -88,6 +97,24 @@ const CotReportSlugRoute = CotReportSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => CotReportRoute,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93ListToolsRoute =
+  Char91DotmcpChar93ListToolsRouteImport.update({
+    id: '/.mcp/list-tools',
+    path: '/.mcp/list-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93InvokeToolToolRoute =
+  Char91DotmcpChar93InvokeToolToolRouteImport.update({
+    id: '/.mcp/invoke-tool/$tool',
+    path: '/.mcp/invoke-tool/$tool',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -95,28 +122,36 @@ export interface FileRoutesByFullPath {
   '/cot-report': typeof CotReportRouteWithChildren
   '/heat-maps': typeof HeatMapsRoute
   '/journal': typeof JournalRoute
+  '/mcp': typeof McpRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/cot-report/$slug': typeof CotReportSlugRoute
   '/indices/dow30': typeof IndicesDow30Route
   '/indices/nasdaq100': typeof IndicesNasdaq100Route
   '/indices/russell': typeof IndicesRussellRoute
   '/indices/sp500': typeof IndicesSp500Route
   '/cot-report/': typeof CotReportIndexRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/calendar': typeof CalendarRoute
   '/heat-maps': typeof HeatMapsRoute
   '/journal': typeof JournalRoute
+  '/mcp': typeof McpRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/cot-report/$slug': typeof CotReportSlugRoute
   '/indices/dow30': typeof IndicesDow30Route
   '/indices/nasdaq100': typeof IndicesNasdaq100Route
   '/indices/russell': typeof IndicesRussellRoute
   '/indices/sp500': typeof IndicesSp500Route
   '/cot-report': typeof CotReportIndexRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -125,14 +160,18 @@ export interface FileRoutesById {
   '/cot-report': typeof CotReportRouteWithChildren
   '/heat-maps': typeof HeatMapsRoute
   '/journal': typeof JournalRoute
+  '/mcp': typeof McpRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/cot-report/$slug': typeof CotReportSlugRoute
   '/indices/dow30': typeof IndicesDow30Route
   '/indices/nasdaq100': typeof IndicesNasdaq100Route
   '/indices/russell': typeof IndicesRussellRoute
   '/indices/sp500': typeof IndicesSp500Route
   '/cot-report/': typeof CotReportIndexRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -142,28 +181,36 @@ export interface FileRouteTypes {
     | '/cot-report'
     | '/heat-maps'
     | '/journal'
+    | '/mcp'
     | '/news'
     | '/trading-hours'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/cot-report/$slug'
     | '/indices/dow30'
     | '/indices/nasdaq100'
     | '/indices/russell'
     | '/indices/sp500'
     | '/cot-report/'
+    | '/.mcp/invoke-tool/$tool'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/calendar'
     | '/heat-maps'
     | '/journal'
+    | '/mcp'
     | '/news'
     | '/trading-hours'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/cot-report/$slug'
     | '/indices/dow30'
     | '/indices/nasdaq100'
     | '/indices/russell'
     | '/indices/sp500'
     | '/cot-report'
+    | '/.mcp/invoke-tool/$tool'
   id:
     | '__root__'
     | '/'
@@ -171,14 +218,18 @@ export interface FileRouteTypes {
     | '/cot-report'
     | '/heat-maps'
     | '/journal'
+    | '/mcp'
     | '/news'
     | '/trading-hours'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/cot-report/$slug'
     | '/indices/dow30'
     | '/indices/nasdaq100'
     | '/indices/russell'
     | '/indices/sp500'
     | '/cot-report/'
+    | '/.mcp/invoke-tool/$tool'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -187,12 +238,16 @@ export interface RootRouteChildren {
   CotReportRoute: typeof CotReportRouteWithChildren
   HeatMapsRoute: typeof HeatMapsRoute
   JournalRoute: typeof JournalRoute
+  McpRoute: typeof McpRoute
   NewsRoute: typeof NewsRoute
   TradingHoursRoute: typeof TradingHoursRoute
+  Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   IndicesDow30Route: typeof IndicesDow30Route
   IndicesNasdaq100Route: typeof IndicesNasdaq100Route
   IndicesRussellRoute: typeof IndicesRussellRoute
   IndicesSp500Route: typeof IndicesSp500Route
+  Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -209,6 +264,13 @@ declare module '@tanstack/react-router' {
       path: '/news'
       fullPath: '/news'
       preLoaderRoute: typeof NewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/journal': {
@@ -288,6 +350,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CotReportSlugRouteImport
       parentRoute: typeof CotReportRoute
     }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/list-tools': {
+      id: '/.mcp/list-tools'
+      path: '/.mcp/list-tools'
+      fullPath: '/.mcp/list-tools'
+      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/invoke-tool/$tool': {
+      id: '/.mcp/invoke-tool/$tool'
+      path: '/.mcp/invoke-tool/$tool'
+      fullPath: '/.mcp/invoke-tool/$tool'
+      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -311,12 +394,17 @@ const rootRouteChildren: RootRouteChildren = {
   CotReportRoute: CotReportRouteWithChildren,
   HeatMapsRoute: HeatMapsRoute,
   JournalRoute: JournalRoute,
+  McpRoute: McpRoute,
   NewsRoute: NewsRoute,
   TradingHoursRoute: TradingHoursRoute,
+  Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
   IndicesDow30Route: IndicesDow30Route,
   IndicesNasdaq100Route: IndicesNasdaq100Route,
   IndicesRussellRoute: IndicesRussellRoute,
   IndicesSp500Route: IndicesSp500Route,
+  Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
