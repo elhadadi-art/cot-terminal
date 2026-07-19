@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TradingHoursRouteImport } from './routes/trading-hours'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as McpRouteImport } from './routes/mcp'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as JournalRouteImport } from './routes/journal'
 import { Route as HeatMapsRouteImport } from './routes/heat-maps'
 import { Route as CotReportRouteImport } from './routes/cot-report'
@@ -40,6 +41,11 @@ const NewsRoute = NewsRouteImport.update({
 const McpRoute = McpRouteImport.update({
   id: '/mcp',
   path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JournalRoute = JournalRouteImport.update({
@@ -122,6 +128,7 @@ export interface FileRoutesByFullPath {
   '/cot-report': typeof CotReportRouteWithChildren
   '/heat-maps': typeof HeatMapsRoute
   '/journal': typeof JournalRoute
+  '/login': typeof LoginRoute
   '/mcp': typeof McpRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
@@ -140,6 +147,7 @@ export interface FileRoutesByTo {
   '/calendar': typeof CalendarRoute
   '/heat-maps': typeof HeatMapsRoute
   '/journal': typeof JournalRoute
+  '/login': typeof LoginRoute
   '/mcp': typeof McpRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
@@ -160,6 +168,7 @@ export interface FileRoutesById {
   '/cot-report': typeof CotReportRouteWithChildren
   '/heat-maps': typeof HeatMapsRoute
   '/journal': typeof JournalRoute
+  '/login': typeof LoginRoute
   '/mcp': typeof McpRoute
   '/news': typeof NewsRoute
   '/trading-hours': typeof TradingHoursRoute
@@ -181,6 +190,7 @@ export interface FileRouteTypes {
     | '/cot-report'
     | '/heat-maps'
     | '/journal'
+    | '/login'
     | '/mcp'
     | '/news'
     | '/trading-hours'
@@ -199,6 +209,7 @@ export interface FileRouteTypes {
     | '/calendar'
     | '/heat-maps'
     | '/journal'
+    | '/login'
     | '/mcp'
     | '/news'
     | '/trading-hours'
@@ -218,6 +229,7 @@ export interface FileRouteTypes {
     | '/cot-report'
     | '/heat-maps'
     | '/journal'
+    | '/login'
     | '/mcp'
     | '/news'
     | '/trading-hours'
@@ -238,6 +250,7 @@ export interface RootRouteChildren {
   CotReportRoute: typeof CotReportRouteWithChildren
   HeatMapsRoute: typeof HeatMapsRoute
   JournalRoute: typeof JournalRoute
+  LoginRoute: typeof LoginRoute
   McpRoute: typeof McpRoute
   NewsRoute: typeof NewsRoute
   TradingHoursRoute: typeof TradingHoursRoute
@@ -271,6 +284,13 @@ declare module '@tanstack/react-router' {
       path: '/mcp'
       fullPath: '/mcp'
       preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/journal': {
@@ -394,6 +414,7 @@ const rootRouteChildren: RootRouteChildren = {
   CotReportRoute: CotReportRouteWithChildren,
   HeatMapsRoute: HeatMapsRoute,
   JournalRoute: JournalRoute,
+  LoginRoute: LoginRoute,
   McpRoute: McpRoute,
   NewsRoute: NewsRoute,
   TradingHoursRoute: TradingHoursRoute,
