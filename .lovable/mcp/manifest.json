@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "sdk_version": "0.23.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://fetsxhgvaklhnofpbdsb.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "marketiq-mcp",
+      "version": "0.1.0",
+      "title": "Marketiq Terminal"
+    },
+    "tools": [
+      {
+        "name": "get_market_snapshot",
+        "title": "Get market snapshot",
+        "description": "Return the current Marketiq market snapshot: major indices, breadth, and Fear & Greed reading.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_top_movers",
+        "title": "Get top movers",
+        "description": "List the top gainers, losers, or most-active US stocks tracked by Marketiq. Default limit 10.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "gainers",
+                "losers",
+                "active"
+              ],
+              "description": "Which mover list to return."
+            },
+            "limit": {
+              "description": "Max rows to return (1-50).",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_market_news",
+        "title": "Get market news",
+        "description": "Return the most recent market news headlines with source, sentiment, and impact.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": true
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "limit": {
+              "description": "Max headlines (1-50). Default 15.",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            },
+            "category": {
+              "description": "Optional category filter (e.g. 'macro').",
+              "type": "string"
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_ai_signals",
+        "title": "Get AI trading signals",
+        "description": "Return Marketiq's most recent AI-generated buy/sell/watch signals with confidence and trigger notes.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "signalType": {
+              "description": "Optionally filter by signal type.",
+              "type": "string",
+              "enum": [
+                "buy",
+                "sell",
+                "watch"
+              ]
+            },
+            "minConfidence": {
+              "description": "Minimum confidence 0-1. Default 0.",
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "limit": {
+              "description": "Max signals. Default 15.",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
